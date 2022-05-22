@@ -21,6 +21,15 @@ namespace TextBook.Data
         public System.TimeSpan Time { get; set; }
         public int CorrectAnswers { get; set; }
         public System.DateTime DateOfPassage { get; set; }
+
+        public string NameSurname
+        {
+            get
+            {
+                string name = $"{Name} {Surname}";
+                return name;
+            }
+        }
     
         public virtual Test Test { get; set; }
     }

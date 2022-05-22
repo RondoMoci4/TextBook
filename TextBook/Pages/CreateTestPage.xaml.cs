@@ -458,12 +458,12 @@ namespace TextBook.Pages
         {
             if(Properties.Settings.Default.IdExistingTest == 0)
             {
-                var idTest = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
-                lbListQuestion.ItemsSource = ConnectionClass.connection.TestQuestion.Where(x => x.IdTest == idTest.IdTest).ToList();
+                var idTest = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+                lbListQuestion.ItemsSource = ConnectionClass.connect.TestQuestion.Where(x => x.IdTest == idTest.IdTest).ToList();
             }
             else
             {
-                lbListQuestion.ItemsSource = ConnectionClass.connection.TestQuestion.Where(x => x.IdTest == Properties.Settings.Default.IdExistingTest).ToList();
+                lbListQuestion.ItemsSource = ConnectionClass.connect.TestQuestion.Where(x => x.IdTest == Properties.Settings.Default.IdExistingTest).ToList();
             }
             if (brdInfoQuestion.Width == 250)
             {

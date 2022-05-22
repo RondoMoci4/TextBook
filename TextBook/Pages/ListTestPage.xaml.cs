@@ -48,7 +48,7 @@ namespace TextBook.Pages
         private void lvTest_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Properties.Settings.Default.TitleTest = labelTitle.Text;
-            MessageBox.Show(labelTitle.Text);
+            //MessageBox.Show(labelTitle.Text);
             FrameClass.mainFrame.Navigate(new RegistrationPage());
         }
 
