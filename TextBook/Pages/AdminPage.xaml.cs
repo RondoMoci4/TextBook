@@ -25,9 +25,10 @@ namespace TextBook.Pages
         public AdminPage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
-            
-            dgInfoResult.ItemsSource = ConnectionClass.connection.TestResult.ToList();
+           // ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
+
+            dgInfoResult.ItemsSource = ConnectionClass.connect.TestResult.ToList();
         }
 
         private void btnCreateTest_Click(object sender, RoutedEventArgs e) { FrameClass.mainFrame.Navigate(new ListTestPage()); }

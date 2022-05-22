@@ -30,13 +30,14 @@ namespace TextBook.Pages
         public CreateTestPage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
+          //  ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
             btnDeleteQuestion.Opacity = 0.3;
             btnUpdateQuestion.Opacity = 0.3;
             btnResetQuestion.Opacity = 0.3;
             cmbUnitTime.SelectedIndex = 0;
             txbTestCreator.Text = $"{Properties.Settings.Default.NameAdmin} {Properties.Settings.Default.SurnameAdmin}";
-            var existing = ConnectionClass.connection.Test.FirstOrDefault(x => x.IdTest == Properties.Settings.Default.IdExistingTest);
+            var existing = ConnectionClass.connect.Test.FirstOrDefault(x => x.IdTest == Properties.Settings.Default.IdExistingTest);
             if (existing == null)
             {
                 txbTime.Text = timeTest.ToString();
@@ -74,20 +75,20 @@ namespace TextBook.Pages
                                         CountQuestion = Convert.ToInt32(txbCountQuestion.Text),
                                         CreatorTest = Properties.Settings.Default.AdminId
                                     };
-                                    ConnectionClass.connection.Test.Add(test);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.Test.Add(test);
+                                    ConnectionClass.connect.SaveChanges();
 
-                                    var lastTest = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+                                    var lastTest = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
 
                                     TestQuestion question = new TestQuestion()
                                     {
                                         IdTest = lastTest.IdTest,
                                         TitleQuestion = txbQuestion.Text,
                                     };
-                                    ConnectionClass.connection.TestQuestion.Add(question);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestQuestion.Add(question);
+                                    ConnectionClass.connect.SaveChanges();
 
-                                    var lastQuestion = ConnectionClass.connection.TestQuestion.FirstOrDefault(x => x.TitleQuestion == txbQuestion.Text);
+                                    var lastQuestion = ConnectionClass.connect.TestQuestion.FirstOrDefault(x => x.TitleQuestion == txbQuestion.Text);
                                     List<string> listAnswer = new List<string>();
                                     listAnswer.Add(txbAnswerOne.Text);
                                     listAnswer.Add(txbAnswerTwo.Text);
@@ -102,8 +103,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[0],
                                             Correct = true,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
                                     else
                                     {
@@ -113,8 +114,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[0],
                                             Correct = false,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
 
                                     if (rbTwoAnswer.IsChecked == true)
@@ -125,8 +126,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[1],
                                             Correct = true,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
                                     else
                                     {
@@ -136,8 +137,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[1],
                                             Correct = false,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
 
                                     if (rbThreeAnswer.IsChecked == true)
@@ -148,8 +149,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[2],
                                             Correct = true,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
                                     else
                                     {
@@ -159,8 +160,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[2],
                                             Correct = false,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
 
                                     if (rbFourAnswer.IsChecked == true)
@@ -171,8 +172,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[3],
                                             Correct = true,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
                                     else
                                     {
@@ -182,8 +183,8 @@ namespace TextBook.Pages
                                             Answer = listAnswer[3],
                                             Correct = false,
                                         };
-                                        ConnectionClass.connection.TestAnswer.Add(answer);
-                                        ConnectionClass.connection.SaveChanges();
+                                        ConnectionClass.connect.TestAnswer.Add(answer);
+                                        ConnectionClass.connect.SaveChanges();
                                     }
                                     txbTitleTest.IsReadOnly = true;
                                     Existing = true;
@@ -217,20 +218,20 @@ namespace TextBook.Pages
                             {
                                 countQuestion++;
                                 txbCountQuestion.Text = $"{countQuestion}";
-                                var test = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+                                var test = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
                                 test.CountQuestion = countQuestion;
-                                ConnectionClass.connection.SaveChanges();
-                                var lastTest = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+                                ConnectionClass.connect.SaveChanges();
+                                var lastTest = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
 
                                 TestQuestion question = new TestQuestion()
                                 {
                                     IdTest = lastTest.IdTest,
                                     TitleQuestion = txbQuestion.Text,
                                 };
-                                ConnectionClass.connection.TestQuestion.Add(question);
-                                ConnectionClass.connection.SaveChanges();
+                                ConnectionClass.connect.TestQuestion.Add(question);
+                                ConnectionClass.connect.SaveChanges();
 
-                                var lastQuestion = ConnectionClass.connection.TestQuestion.FirstOrDefault(x => x.TitleQuestion == txbQuestion.Text);
+                                var lastQuestion = ConnectionClass.connect.TestQuestion.FirstOrDefault(x => x.TitleQuestion == txbQuestion.Text);
                                 List<string> listAnswer = new List<string>();
                                 listAnswer.Add(txbAnswerOne.Text);
                                 listAnswer.Add(txbAnswerTwo.Text);
@@ -245,8 +246,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[0],
                                         Correct = true,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
                                 else
                                 {
@@ -256,8 +257,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[0],
                                         Correct = false,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
 
                                 if (rbTwoAnswer.IsChecked == true)
@@ -268,8 +269,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[1],
                                         Correct = true,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
                                 else
                                 {
@@ -279,8 +280,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[1],
                                         Correct = false,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
 
                                 if (rbThreeAnswer.IsChecked == true)
@@ -291,8 +292,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[2],
                                         Correct = true,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
                                 else
                                 {
@@ -302,8 +303,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[2],
                                         Correct = false,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
 
                                 if (rbFourAnswer.IsChecked == true)
@@ -314,8 +315,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[3],
                                         Correct = true,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
                                 else
                                 {
@@ -325,8 +326,8 @@ namespace TextBook.Pages
                                         Answer = listAnswer[3],
                                         Correct = false,
                                     };
-                                    ConnectionClass.connection.TestAnswer.Add(answer);
-                                    ConnectionClass.connection.SaveChanges();
+                                    ConnectionClass.connect.TestAnswer.Add(answer);
+                                    ConnectionClass.connect.SaveChanges();
                                 }
                                 Reset();
                             }
@@ -353,15 +354,15 @@ namespace TextBook.Pages
                         if (rbOneAnswer.IsChecked == true || rbTwoAnswer.IsChecked == true || rbThreeAnswer.IsChecked == true || rbFourAnswer.IsChecked == true)
                         {
                             int id = Convert.ToInt32(txbQuestionListBox.Text);
-                            var test = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
-                            var question = ConnectionClass.connection.TestQuestion.FirstOrDefault(x => x.IdTest == test.IdTest && x.IdQuestion == id);
-                            var answer = ConnectionClass.connection.TestAnswer.Where(x => x.IdQuestion == question.IdQuestion).ToList();
+                            var test = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+                            var question = ConnectionClass.connect.TestQuestion.FirstOrDefault(x => x.IdTest == test.IdTest && x.IdQuestion == id);
+                            var answer = ConnectionClass.connect.TestAnswer.Where(x => x.IdQuestion == question.IdQuestion).ToList();
                             List<int> answerInt = new List<int>(answer.Select(x => x.IdAnswer));
                             int one = answerInt[0];
                             int two = answerInt[1];
                             int three = answerInt[2];
                             int four = answerInt[3];
-                            var answerOne = ConnectionClass.connection.TestAnswer.FirstOrDefault(x => x.IdAnswer == one);
+                            var answerOne = ConnectionClass.connect.TestAnswer.FirstOrDefault(x => x.IdAnswer == one);
                             if (rbOneAnswer.IsChecked == true)
                             {
                                 answerOne.Answer = txbAnswerOne.Text;
@@ -372,7 +373,7 @@ namespace TextBook.Pages
                                 answerOne.Answer = txbAnswerOne.Text;
                                 answerOne.Correct = false;
                             }
-                            var answerTwo = ConnectionClass.connection.TestAnswer.FirstOrDefault(x => x.IdAnswer == two);
+                            var answerTwo = ConnectionClass.connect.TestAnswer.FirstOrDefault(x => x.IdAnswer == two);
                             if (rbTwoAnswer.IsChecked == true)
                             {
                                 answerTwo.Answer = txbAnswerOne.Text;
@@ -383,7 +384,7 @@ namespace TextBook.Pages
                                 answerTwo.Answer = txbAnswerOne.Text;
                                 answerTwo.Correct = false;
                             }
-                            var answerThree = ConnectionClass.connection.TestAnswer.FirstOrDefault(x => x.IdAnswer == three);
+                            var answerThree = ConnectionClass.connect.TestAnswer.FirstOrDefault(x => x.IdAnswer == three);
                             if (rbThreeAnswer.IsChecked == true)
                             {
                                 answerThree.Answer = txbAnswerOne.Text;
@@ -394,7 +395,7 @@ namespace TextBook.Pages
                                 answerThree.Answer = txbAnswerOne.Text;
                                 answerThree.Correct = false;
                             }
-                            var answerFour = ConnectionClass.connection.TestAnswer.FirstOrDefault(x => x.IdAnswer == four);
+                            var answerFour = ConnectionClass.connect.TestAnswer.FirstOrDefault(x => x.IdAnswer == four);
                             if (rbFourAnswer.IsChecked == true)
                             {
                                 answerFour.Answer = txbAnswerOne.Text;
@@ -409,7 +410,7 @@ namespace TextBook.Pages
                             test.Time = TimeSpan.Parse(txbTime.Text);
                             test.Title = txbTitleTest.Text;
                             test.CountQuestion = Convert.ToInt32(txbCountQuestion.Text);
-                            ConnectionClass.connection.SaveChanges();
+                            ConnectionClass.connect.SaveChanges();
                         }
                         else { MessageBox.Show("Выберите правильный ответ!!!"); }
                     }
@@ -427,21 +428,21 @@ namespace TextBook.Pages
         {
 
             int id = Convert.ToInt32(txbQuestionListBox.Text);
-            var test = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
-            var question = ConnectionClass.connection.TestQuestion.FirstOrDefault(x => x.IdTest == test.IdTest && x.IdQuestion == id);
-            var answer = ConnectionClass.connection.TestAnswer.Where(x => x.IdQuestion == id).ToList();
-            ConnectionClass.connection.TestAnswer.RemoveRange(answer);
-            ConnectionClass.connection.TestQuestion.Remove(question);
-            ConnectionClass.connection.SaveChanges();
+            var test = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == txbTitleTest.Text);
+            var question = ConnectionClass.connect.TestQuestion.FirstOrDefault(x => x.IdTest == test.IdTest && x.IdQuestion == id);
+            var answer = ConnectionClass.connect.TestAnswer.Where(x => x.IdQuestion == id).ToList();
+            ConnectionClass.connect.TestAnswer.RemoveRange(answer);
+            ConnectionClass.connect.TestQuestion.Remove(question);
+            ConnectionClass.connect.SaveChanges();
             Reset();
         }
 
         private void lbListQuestion_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int id = Convert.ToInt32(txbQuestionListBox.Text);
-            var idQuestion = ConnectionClass.connection.TestQuestion.FirstOrDefault(x => x.IdQuestion == id);
+            var idQuestion = ConnectionClass.connect.TestQuestion.FirstOrDefault(x => x.IdQuestion == id);
             txbQuestion.Text = idQuestion.TitleQuestion;
-            var answer = ConnectionClass.connection.TestAnswer.Where(x => x.IdQuestion == idQuestion.IdQuestion).ToList();
+            var answer = ConnectionClass.connect.TestAnswer.Where(x => x.IdQuestion == idQuestion.IdQuestion).ToList();
             List<string> Answer = new List<string>(answer.Select(x => x.Answer));
             txbAnswerOne.Text = Answer[0]; txbAnswerTwo.Text = Answer[1]; txbAnswerThree.Text = Answer[2]; txbAnswerFour.Text = Answer[3];
             List<bool> answerBool = new List<bool>(answer.Select(x => x.Correct));
@@ -534,7 +535,7 @@ namespace TextBook.Pages
 
         private void LoadTest(int idTest)
         {
-            var test = ConnectionClass.connection.Test.FirstOrDefault(x => x.IdTest == idTest);
+            var test = ConnectionClass.connect.Test.FirstOrDefault(x => x.IdTest == idTest);
             txbTitleTest.Text = test.Title;
             timeTest = test.Time;
             txbTime.Text = timeTest.ToString();

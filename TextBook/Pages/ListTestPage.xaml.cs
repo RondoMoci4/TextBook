@@ -26,8 +26,9 @@ namespace TextBook.Pages
         public ListTestPage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
-            lvTest.ItemsSource = ConnectionClass.connection.Test.ToList();
+           // ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
+            lvTest.ItemsSource = ConnectionClass.connect.Test.ToList();
         }
 
         private void txbSearchTest_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch); }
@@ -38,8 +39,8 @@ namespace TextBook.Pages
 
         private void Search()
         {
-            ConnectionClass.connection = new DBTextBookEntities();
-            var testSearch = ConnectionClass.connection.Test.ToList();
+            ConnectionClass.connect = new TextBookEntities();
+            var testSearch = ConnectionClass.connect.Test.ToList();
             testSearch = testSearch.Where(x => x.Title.ToLower().Contains(txbSearchTest.Text.ToLower())).ToList();
             lvTest.ItemsSource = testSearch.ToList();
         }
@@ -72,7 +73,7 @@ namespace TextBook.Pages
         private void btnUpdateTest_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.TitleTest = labelTitle.Text;
-            var testId = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == labelTitle.Text);
+            var testId = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == labelTitle.Text);
             Properties.Settings.Default.IdExistingTest = testId.IdTest;
             FrameClass.mainFrame.Navigate(new CreateTestPage());
         }

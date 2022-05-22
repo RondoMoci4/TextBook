@@ -26,7 +26,8 @@ namespace TextBook.Pages
         public ListThemePage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
+            // ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
         }
 
         private void txbSearchTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch); }

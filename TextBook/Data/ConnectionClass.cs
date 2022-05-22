@@ -9,5 +9,6 @@ namespace TextBook.Data
     internal class ConnectionClass
     {
         public static DBTextBookEntities connection;
+        public static TextBookEntities connect;
     }
 }

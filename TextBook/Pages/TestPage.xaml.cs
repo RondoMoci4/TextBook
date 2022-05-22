@@ -37,12 +37,13 @@ namespace TextBook.Pages
         public TestPage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
-            var test = ConnectionClass.connection.Test.Where(x => x.Title == Properties.Settings.Default.TitleTest).ToList();
-            int idtest = ConnectionClass.connection.Test.FirstOrDefault(x => x.Title == Properties.Settings.Default.TitleTest).IdTest;
-            var count = ConnectionClass.connection.TestQuestion.Where(x => x.IdTest == idtest).Count();
+            // ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
+            var test = ConnectionClass.connect.Test.Where(x => x.Title == Properties.Settings.Default.TitleTest).ToList();
+            int idtest = ConnectionClass.connect.Test.FirstOrDefault(x => x.Title == Properties.Settings.Default.TitleTest).IdTest;
+            var count = ConnectionClass.connect.TestQuestion.Where(x => x.IdTest == idtest).Count();
             var time = test.Select(x => x.Time).FirstOrDefault(); countQuestion = count;
-            var create = test.Join(ConnectionClass.connection.Autorization, x => x.CreatorTest, p => p.IdUser, (x, p) => new
+            var create = test.Join(ConnectionClass.connect.Autorization, x => x.CreatorTest, p => p.IdUser, (x, p) => new
             {
                 FIO = p.Name + " " + p.Surname + " " + p.Patronymic,
             }).FirstOrDefault();
@@ -50,13 +51,13 @@ namespace TextBook.Pages
             txbQuestion.Text = count.ToString();
             txbAllQuestion.Text = count.ToString(); txbTestInfo.Text = test.Select(x => x.Title).FirstOrDefault().ToString();
             Timer(time);
-            var question = test.Join(ConnectionClass.connection.TestQuestion, x => x.IdTest, p => p.IdTest, (x, p) => new { p.IdQuestion }).ToList(); 
+            var question = test.Join(ConnectionClass.connect.TestQuestion, x => x.IdTest, p => p.IdTest, (x, p) => new { p.IdQuestion }).ToList(); 
             idQuestion = new List<int>(question.Select(x => x.IdQuestion)); 
             ranQuestion = random.Next(idQuestion.Count); numberQuestion = idQuestion[ranQuestion]; 
             LoadAnswer();
             currentQuestion++;
             txbCurrentQuestion.Text = currentQuestion.ToString();
-            txbTextQuestion.Text = ConnectionClass.connection.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
+            txbTextQuestion.Text = ConnectionClass.connect.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
             timeStart = time;
             btnBack.IsEnabled = false; btnBack.Opacity = 0.3;
         }
@@ -71,7 +72,7 @@ namespace TextBook.Pages
             {
                 if (idQuestion.Count == 1)
                 {
-                    string correctAnswer = ConnectionClass.connection.TestAnswer.Where(x => x.Answer == textAnswer).Select(x => x.Correct).FirstOrDefault().ToString();
+                    string correctAnswer = ConnectionClass.connect.TestAnswer.Where(x => x.Answer == textAnswer).Select(x => x.Correct).FirstOrDefault().ToString();
                     if (correctAnswer == "True") { countCorrentQuestion++; backQuestionTrue = true; } else { backQuestionTrue = false; }
                     rbOneAnswer.IsChecked = false; rbTwoAnswer.IsChecked = false; rbThreeAnswer.IsChecked = false; rbFourAnswer.IsChecked = false;
                     grdTest.Visibility = Visibility.Hidden;
@@ -80,7 +81,7 @@ namespace TextBook.Pages
                 else
                 {
                     btnBack.IsEnabled = true; btnBack.Opacity = 1;
-                    string correctAnswer = ConnectionClass.connection.TestAnswer.Where(x => x.Answer == textAnswer).Select(x => x.Correct).FirstOrDefault().ToString();
+                    string correctAnswer = ConnectionClass.connect.TestAnswer.Where(x => x.Answer == textAnswer).Select(x => x.Correct).FirstOrDefault().ToString();
                     if (correctAnswer == "True") { countCorrentQuestion++; backQuestionTrue = true; } else { backQuestionTrue = false; }
                     idBackQuestion.Add(numberQuestion); idQuestion.Remove(numberQuestion);
                     ranQuestion = random.Next(idQuestion.Count); numberQuestion = idQuestion[ranQuestion];
@@ -88,7 +89,7 @@ namespace TextBook.Pages
                     txbCurrentQuestion.Text = currentQuestion.ToString();
                     LoadAnswer();
                     rbOneAnswer.IsChecked = false; rbTwoAnswer.IsChecked = false; rbThreeAnswer.IsChecked = false; rbFourAnswer.IsChecked = false;
-                    txbTextQuestion.Text = ConnectionClass.connection.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
+                    txbTextQuestion.Text = ConnectionClass.connect.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
                 }
             }
 
@@ -110,7 +111,7 @@ namespace TextBook.Pages
                 LoadAnswer();
                 txbCurrentQuestion.Text = currentQuestion.ToString();
                 rbOneAnswer.IsChecked = false; rbTwoAnswer.IsChecked = false; rbThreeAnswer.IsChecked = false; rbFourAnswer.IsChecked = false;
-                txbTextQuestion.Text = ConnectionClass.connection.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
+                txbTextQuestion.Text = ConnectionClass.connect.TestQuestion.Where(x => x.IdQuestion == numberQuestion).Select(x => x.TitleQuestion).FirstOrDefault();
             }
             //добавляет в список прошлый вопрос
         }
@@ -147,8 +148,8 @@ namespace TextBook.Pages
                 CorrectAnswers = resultRating,
                 DateOfPassage = Convert.ToDateTime(txbDateTest.Text)
             };
-            ConnectionClass.connection.TestResult.Add(result);
-            ConnectionClass.connection.SaveChanges();
+            ConnectionClass.connect.TestResult.Add(result);
+            ConnectionClass.connect.SaveChanges();
             FrameClass.mainFrame.Navigate(new ListTestPage());
         }
 
@@ -169,7 +170,7 @@ namespace TextBook.Pages
 
         public void LoadQuestion(List<Test> test)
         {
-            var question = test.Join(ConnectionClass.connection.TestQuestion, x => x.IdTest, p => p.IdTest, (x, p) => new { p.IdQuestion }).ToList(); //список вопросов определенного теста
+            var question = test.Join(ConnectionClass.connect.TestQuestion, x => x.IdTest, p => p.IdTest, (x, p) => new { p.IdQuestion }).ToList(); //список вопросов определенного теста
             idQuestion = new List<int>(question.Select(x => x.IdQuestion)); // список id вопросов
             ranQuestion = random.Next(idQuestion.Count); numberQuestion = idQuestion[ranQuestion]; // случайный выбор вопроса из списка
             idQuestion.Remove(numberQuestion); idBackQuestion.Add(numberQuestion);
@@ -177,7 +178,7 @@ namespace TextBook.Pages
 
         public void LoadAnswer()
         {
-            var answerAll = ConnectionClass.connection.TestAnswer.Where(x => x.IdQuestion == numberQuestion).ToList(); // список ответов на выбранный вопрос
+            var answerAll = ConnectionClass.connect.TestAnswer.Where(x => x.IdQuestion == numberQuestion).ToList(); // список ответов на выбранный вопрос
             List<string> answer = new List<string>(answerAll.Select(x => x.Answer)); // список ответов на вопрос
             List<int> numAnswer = new List<int>();
             for (int i = 0; i < answer.Count; i++)

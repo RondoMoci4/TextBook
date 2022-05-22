@@ -12,7 +12,8 @@ namespace TextBook.Pages
         public EnterPage()
         {
             InitializeComponent();
-            ConnectionClass.connection = new DBTextBookEntities();
+          //  ConnectionClass.connection = new DBTextBookEntities();
+            ConnectionClass.connect = new TextBookEntities();
         }
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
@@ -46,7 +47,7 @@ namespace TextBook.Pages
             }
             else
             {
-                var enter = ConnectionClass.connection.Autorization.FirstOrDefault(x => x.Password == psbPassword.Password && x.Login == txbLogin.Text);
+                var enter = ConnectionClass.connect.Autorization.FirstOrDefault(x => x.Password == psbPassword.Password && x.Login == txbLogin.Text);
                 if (enter == null)
                 {
                     DoubleAnimation anim = new DoubleAnimation();
