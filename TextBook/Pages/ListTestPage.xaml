@@ -31,7 +31,7 @@
                     <Border Width="200"
                 Height="200"
                 Background="{DynamicResource AdditionalColor}"
-                CornerRadius="20"
+                CornerRadius="10"
                 HorizontalAlignment="Left"
                 Grid.Row="1">
                         <Grid>

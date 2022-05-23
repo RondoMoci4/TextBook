@@ -29,26 +29,35 @@ namespace TextBook.Pages
             ConnectionClass.connection = new DBTextBookEntities();
         }
 
-        private void txbSearchTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch); }
+        private void txbSearchTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch,txbSearchTheme); }
 
         private void txbSearchTheme_GotFocus(object sender, RoutedEventArgs e) { GotFocusAnimation(txbVisibleSearch); }
 
         private void txbSearchTheme_TextChanged(object sender, TextChangedEventArgs e) { Search(); }
 
-        private void Search()
-        {
-            //ConnectionClass.connection = new DBTextBookEntities();
-            //var themeSearch = ConnectionClass.connection.Test.ToList();
-            //themeSearch = themeSearch.Where(x => x.Title.ToLower().Contains(txbSearchTheme.Text.ToLower())).ToList();
-            //lvTheme.ItemsSource = themeSearch.ToList();
-        }
-
         private void lvTheme_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            Properties.Settings.Default.TitleTheme = labelTitle.Text;
+            FrameClass.mainFrame.Navigate(new ContentPage());
+        }
 
+        private void btnUpdateTheme_Click(object sender, RoutedEventArgs e)
+        {
+            //Properties.Settings.Default.TitleTheme = labelTitle.Text;
+            //var themeId = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == labelTitle.Text);
+            //Properties.Settings.Default.IdExistingTheme = themeId.IdTheme;
+            //FrameClass.mainFrame.Navigate(new AddContentPage());
         }
 
         private void btnAddTheme_Click(object sender, RoutedEventArgs e) { FrameClass.mainFrame.Navigate(new AddContentPage()); }
+
+        private void Search()
+        {
+            ConnectionClass.connection = new DBTextBookEntities();
+            var themeSearch = ConnectionClass.connection.Test.ToList();
+            themeSearch = themeSearch.Where(x => x.Title.ToLower().Contains(txbSearchTheme.Text.ToLower())).ToList();
+            lvTheme.ItemsSource = themeSearch.ToList();
+        }
 
         private void GotFocusAnimation(TextBlock textblock)
         {
@@ -59,13 +68,17 @@ namespace TextBook.Pages
             textblock.FontSize = 14;
         }
 
-        private void LostFocusAnimation(TextBlock textblock)
+        private void LostFocusAnimation(TextBlock textblock,TextBox textBox)
         {
-            TranslateTransform transform = new TranslateTransform();
-            textblock.RenderTransform = transform;
-            DoubleAnimation animationY = new DoubleAnimation(-20, 0, TimeSpan.FromSeconds(0.3));
-            transform.BeginAnimation(TranslateTransform.YProperty, animationY);
-            textblock.FontSize = 18;
+            if (String.IsNullOrWhiteSpace(textBox.Text))
+            {
+                TranslateTransform transform = new TranslateTransform();
+                textblock.RenderTransform = transform;
+                DoubleAnimation animationY = new DoubleAnimation(-20, 0, TimeSpan.FromSeconds(0.3));
+                transform.BeginAnimation(TranslateTransform.YProperty, animationY);
+                textblock.FontSize = 18;
+                textBox.Text = null;
+            }
         }
     }
 }

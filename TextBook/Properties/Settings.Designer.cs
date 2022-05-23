@@ -118,5 +118,29 @@ namespace TextBook.Properties {
                 this["AdminId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TitleTheme {
+            get {
+                return ((string)(this["TitleTheme"]));
+            }
+            set {
+                this["TitleTheme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int IdExistingTheme {
+            get {
+                return ((int)(this["IdExistingTheme"]));
+            }
+            set {
+                this["IdExistingTheme"] = value;
+            }
+        }
     }
 }

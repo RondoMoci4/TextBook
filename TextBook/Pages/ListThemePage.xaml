@@ -26,22 +26,70 @@
                 
             </Grid>
         </Border>
-        
+
         <ListView x:Name="lvTheme"
                   Grid.Row="1"
                   Background="Transparent"
                   BorderThickness="0"
-                  Margin="10" 
-                  MouseDoubleClick="lvTheme_MouseDoubleClick">
+                  Margin="10">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    
+                    <Border Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="500"
+                Height="150"
+                CornerRadius="10"
+                Background="{DynamicResource AdditionalColor}">
+                        <Grid Margin="10">
+                            
+                            <TextBlock VerticalAlignment="Top"
+                           HorizontalAlignment="Center"
+                           FontSize="18"
+                           Foreground="{DynamicResource MainColor}"
+                           >Наименование темы</TextBlock>
+                            <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="40">
+                                <TextBlock FontSize="16"
+                               Foreground="{DynamicResource MainColor}"
+                               TextDecorations="Underline">Описание:</TextBlock>
+                                <TextBlock FontSize="16"
+                               Foreground="{DynamicResource MainColor}"
+                               Margin="10,0,0,0"
+                               TextWrapping="Wrap"
+                               Width="310">текст текст текст текст текст текст текст текст текст текст текст текст текст</TextBlock>
+                            </StackPanel>
+                            <Button Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,0,10"
+                        Style="{DynamicResource btnList}"
+                        Width="150"
+                        Height="25"
+                        x:Name="btnUpdateTheme"
+                        Click="btnUpdateTheme_Click"
+                        Visibility="{Binding Source={x:Static properties:Settings.Default},Path=AdminStatus,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal"
+                                Margin="0,0,20,0">
+                                    <materialDesign:PackIcon Kind="Update"
+                                                 VerticalAlignment="Center"/>
+                                    <TextBlock VerticalAlignment="Center"
+                                   Margin="10,0,0,2">Редактировать</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
+        <TextBlock Text="{Binding ElementName=lvTextbook,Path=SelectedItem.Title}" 
+                   x:Name="labelTitle"
+                   Visibility="Hidden"/>
         <UserControl HorizontalAlignment="Center"
-                 VerticalAlignment="Center">
+                 VerticalAlignment="Center"
+                         Margin="0,0,0,0">
             <Grid>
                 <TextBox Style="{DynamicResource txbModernStyle}"
                  

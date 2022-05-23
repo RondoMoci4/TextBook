@@ -30,7 +30,7 @@ namespace TextBook.Pages
             lvTest.ItemsSource = ConnectionClass.connection.Test.ToList();
         }
 
-        private void txbSearchTest_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch); }
+        private void txbSearchTest_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch,txbSearchTest); }
 
         private void txbSearchTest_GotFocus(object sender, RoutedEventArgs e) { GotFocusAnimation(txbVisibleSearch); }
 
@@ -47,12 +47,11 @@ namespace TextBook.Pages
         private void lvTest_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Properties.Settings.Default.TitleTest = labelTitle.Text;
-            MessageBox.Show(labelTitle.Text);
             FrameClass.mainFrame.Navigate(new RegistrationPage());
         }
 
         private void GotFocusAnimation(TextBlock textblock)
-        {
+        { 
             TranslateTransform transform = new TranslateTransform();
             textblock.RenderTransform = transform;
             DoubleAnimation animationY = new DoubleAnimation(0, -20, TimeSpan.FromSeconds(0.3));
@@ -60,13 +59,17 @@ namespace TextBook.Pages
             textblock.FontSize = 14;
         }
 
-        private void LostFocusAnimation(TextBlock textblock)
+        private void LostFocusAnimation(TextBlock textVisible,TextBox textBox)
         {
-            TranslateTransform transform = new TranslateTransform();
-            textblock.RenderTransform = transform;
-            DoubleAnimation animationY = new DoubleAnimation(-20, 0, TimeSpan.FromSeconds(0.3));
-            transform.BeginAnimation(TranslateTransform.YProperty, animationY);
-            textblock.FontSize = 18;
+            if (String.IsNullOrWhiteSpace(textBox.Text))
+            {
+                TranslateTransform transform = new TranslateTransform();
+                textVisible.RenderTransform = transform;
+                DoubleAnimation animationY = new DoubleAnimation(-20, 0, TimeSpan.FromSeconds(0.3));
+                transform.BeginAnimation(TranslateTransform.YProperty, animationY);
+                textVisible.FontSize = 18;
+                textBox.Text = null;
+            }
         }
 
         private void btnUpdateTest_Click(object sender, RoutedEventArgs e)
