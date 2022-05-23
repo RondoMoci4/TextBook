@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TextBook.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="650"
-      Title="AddContentPage">
+      Title="Добавление контента">
 
     <Grid>
         

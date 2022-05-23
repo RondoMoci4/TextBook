@@ -30,5 +30,7 @@ namespace TextBook.Data
         public virtual DbSet<TestAnswer> TestAnswer { get; set; }
         public virtual DbSet<TestQuestion> TestQuestion { get; set; }
         public virtual DbSet<TestResult> TestResult { get; set; }
+        public virtual DbSet<Theme> Theme { get; set; }
+        public virtual DbSet<TopicTest> TopicTest { get; set; }
     }
 }

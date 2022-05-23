@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище DBTextBookModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище DBTextBookModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Autorization">
           <Key>
             <PropertyRef Name="IdUser" />
@@ -56,6 +56,23 @@
           <Property Name="CorrectAnswers" Type="int" Nullable="false" />
           <Property Name="DateOfPassage" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Theme">
+          <Key>
+            <PropertyRef Name="idTheme" />
+          </Key>
+          <Property Name="idTheme" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TextTheme" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TopicTest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Test" Type="int" Nullable="false" />
+          <Property Name="Theme" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Test_Autorization">
           <End Role="Autorization" Type="Self.Autorization" Multiplicity="1" />
           <End Role="Test" Type="Self.Test" Multiplicity="*" />
@@ -104,12 +121,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TopicTest_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="TopicTest" Type="Self.TopicTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="IdTest" />
+            </Principal>
+            <Dependent Role="TopicTest">
+              <PropertyRef Name="Test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicTest_Theme">
+          <End Role="Theme" Type="Self.Theme" Multiplicity="1" />
+          <End Role="TopicTest" Type="Self.TopicTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Theme">
+              <PropertyRef Name="idTheme" />
+            </Principal>
+            <Dependent Role="TopicTest">
+              <PropertyRef Name="Theme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище DBTextBookModelContainer">
           <EntitySet Name="Autorization" EntityType="Self.Autorization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestAnswer" EntityType="Self.TestAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestQuestion" EntityType="Self.TestQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestResult" EntityType="Self.TestResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Theme" EntityType="Self.Theme" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TopicTest" EntityType="Self.TopicTest" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Test_Autorization" Association="Self.FK_Test_Autorization">
             <End Role="Autorization" EntitySet="Autorization" />
             <End Role="Test" EntitySet="Test" />
@@ -126,9 +169,16 @@
             <End Role="Test" EntitySet="Test" />
             <End Role="TestResult" EntitySet="TestResult" />
           </AssociationSet>
+          <AssociationSet Name="FK_TopicTest_Test" Association="Self.FK_TopicTest_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TopicTest" EntitySet="TopicTest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicTest_Theme" Association="Self.FK_TopicTest_Theme">
+            <End Role="Theme" EntitySet="Theme" />
+            <End Role="TopicTest" EntitySet="TopicTest" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBTextBookModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -157,6 +207,7 @@
           <NavigationProperty Name="Autorization" Relationship="Self.FK_Test_Autorization" FromRole="Test" ToRole="Autorization" />
           <NavigationProperty Name="TestQuestion" Relationship="Self.FK_TestQuestion_Test" FromRole="Test" ToRole="TestQuestion" />
           <NavigationProperty Name="TestResult" Relationship="Self.FK_TestResult_Test" FromRole="Test" ToRole="TestResult" />
+          <NavigationProperty Name="TopicTest" Relationship="DBTextBookModel.FK_TopicTest_Test" FromRole="Test" ToRole="TopicTest" />
         </EntityType>
         <EntityType Name="TestAnswer">
           <Key>
@@ -261,7 +312,61 @@
             <End Role="TestQuestion" EntitySet="TestQuestion" />
             <End Role="TestAnswer" EntitySet="TestAnswer" />
           </AssociationSet>
+          <EntitySet Name="Theme" EntityType="DBTextBookModel.Theme" />
+          <EntitySet Name="TopicTest" EntityType="DBTextBookModel.TopicTest" />
+          <AssociationSet Name="FK_TopicTest_Test" Association="DBTextBookModel.FK_TopicTest_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TopicTest" EntitySet="TopicTest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicTest_Theme" Association="DBTextBookModel.FK_TopicTest_Theme">
+            <End Role="Theme" EntitySet="Theme" />
+            <End Role="TopicTest" EntitySet="TopicTest" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Theme">
+          <Key>
+            <PropertyRef Name="idTheme" />
+          </Key>
+          <Property Name="idTheme" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TextTheme" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TopicTest" Relationship="DBTextBookModel.FK_TopicTest_Theme" FromRole="Theme" ToRole="TopicTest" />
+        </EntityType>
+        <EntityType Name="TopicTest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Test" Type="Int32" Nullable="false" />
+          <Property Name="Theme" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Test1" Relationship="DBTextBookModel.FK_TopicTest_Test" FromRole="TopicTest" ToRole="Test" />
+          <NavigationProperty Name="Theme1" Relationship="DBTextBookModel.FK_TopicTest_Theme" FromRole="TopicTest" ToRole="Theme" />
+        </EntityType>
+        <Association Name="FK_TopicTest_Test">
+          <End Type="DBTextBookModel.Test" Role="Test" Multiplicity="1" />
+          <End Type="DBTextBookModel.TopicTest" Role="TopicTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="IdTest" />
+            </Principal>
+            <Dependent Role="TopicTest">
+              <PropertyRef Name="Test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicTest_Theme">
+          <End Type="DBTextBookModel.Theme" Role="Theme" Multiplicity="1" />
+          <End Type="DBTextBookModel.TopicTest" Role="TopicTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Theme">
+              <PropertyRef Name="idTheme" />
+            </Principal>
+            <Dependent Role="TopicTest">
+              <PropertyRef Name="Theme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -321,6 +426,25 @@
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="CorrectAnswers" ColumnName="CorrectAnswers" />
                 <ScalarProperty Name="DateOfPassage" ColumnName="DateOfPassage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Theme">
+            <EntityTypeMapping TypeName="DBTextBookModel.Theme">
+              <MappingFragment StoreEntitySet="Theme">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TextTheme" ColumnName="TextTheme" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="idTheme" ColumnName="idTheme" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TopicTest">
+            <EntityTypeMapping TypeName="DBTextBookModel.TopicTest">
+              <MappingFragment StoreEntitySet="TopicTest">
+                <ScalarProperty Name="Theme" ColumnName="Theme" />
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

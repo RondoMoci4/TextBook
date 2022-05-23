@@ -43,10 +43,10 @@ namespace TextBook.Pages
 
         private void btnUpdateTheme_Click(object sender, RoutedEventArgs e)
         {
-            //Properties.Settings.Default.TitleTheme = labelTitle.Text;
-            //var themeId = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == labelTitle.Text);
-            //Properties.Settings.Default.IdExistingTheme = themeId.IdTheme;
-            //FrameClass.mainFrame.Navigate(new AddContentPage());
+            Properties.Settings.Default.TitleTheme = labelTitle.Text;
+            var themeId = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == labelTitle.Text);
+            Properties.Settings.Default.IdExistingTheme = themeId.idTheme;
+            FrameClass.mainFrame.Navigate(new AddContentPage());
         }
 
         private void btnAddTheme_Click(object sender, RoutedEventArgs e) { FrameClass.mainFrame.Navigate(new AddContentPage()); }

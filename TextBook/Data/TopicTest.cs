@@ -12,24 +12,13 @@ namespace TextBook.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class TestResult
+    public partial class TopicTest
     {
-        public int IdResult { get; set; }
-        public int IdTest { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public System.TimeSpan Time { get; set; }
-        public int CorrectAnswers { get; set; }
-        public System.DateTime DateOfPassage { get; set; }
-
-        public string NameSurname
-        {
-            get
-            {
-                return $"{Name} {Surname}";
-            }
-        }
+        public int id { get; set; }
+        public int Test { get; set; }
+        public int Theme { get; set; }
     
-        public virtual Test Test { get; set; }
+        public virtual Test Test1 { get; set; }
+        public virtual Theme Theme1 { get; set; }
     }
 }
