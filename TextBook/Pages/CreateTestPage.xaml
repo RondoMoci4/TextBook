@@ -107,7 +107,7 @@
                          HorizontalContentAlignment="Center"
                          FontSize="18"
                          IsReadOnly="True"
-                         x:Name="txbTestCreator">Иванов Иван Иванович</TextBox>
+                         x:Name="txbTestCreator"></TextBox>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1">

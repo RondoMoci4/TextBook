@@ -163,7 +163,7 @@ namespace TextBook.Pages
             txbCountCurrentQuestion.Text = $"{countCorrentQuestion} из {countQuestion}";
             txbUserTest.Text = $"{Properties.Settings.Default.NameStudent} {Properties.Settings.Default.SurnameStudent}";
             txbDateTest.Text = DateTime.Now.ToString();
-            txbTitleTest.Text = "Теория вероятности";
+            txbTitleTest.Text = $"{Properties.Settings.Default.TitleTest}";
         }
         private void rbAll_Checked(object sender, RoutedEventArgs e) { RadioButton rb = (RadioButton)sender; textAnswer = rb.Content.ToString(); }
 
@@ -202,7 +202,6 @@ namespace TextBook.Pages
                 if (time == TimeSpan.Zero)
                 {
                     _timer.Stop();
-                    txbTime.Text = "Время закончилось";
                     grdTest.Visibility = Visibility.Hidden;
                     grdResult.Visibility = Visibility.Visible;
                 }
