@@ -144,5 +144,10 @@ namespace TextBook.Pages
                 textBox.Text = null;
             }
         }
+
+        private void btnResetQuestion_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

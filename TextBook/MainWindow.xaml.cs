@@ -68,12 +68,11 @@ namespace TextBook
             }
         }
 
-        bool admin = false;
         private void btnAdmin_Click(object sender, RoutedEventArgs e) // Кнопка загрузки страницы для авторизации администратора
         {
-            
-            if (admin == false) { FrameClass.mainFrame.Navigate(new EnterPage()); admin = true; Properties.Settings.Default.AdminStatus = false; }
-            else { FrameClass.mainFrame.GoBack(); admin = false; }
+            Properties.Settings.Default.AdminStatus = false;
+            if (Properties.Settings.Default.AdminStatus == false) { FrameClass.mainFrame.Navigate(new EnterPage()); }
+            else { FrameClass.mainFrame.Navigate(new AdminPage()); Properties.Settings.Default.IdExistingTest = 0; }
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)

@@ -80,6 +80,6 @@ namespace TextBook.Pages
             FrameClass.mainFrame.Navigate(new CreateTestPage());
         }
 
-        private void btnAddTest_Click(object sender, RoutedEventArgs e) { FrameClass.mainFrame.Navigate(new CreateTestPage()); }
+        private void btnAddTest_Click(object sender, RoutedEventArgs e) { Properties.Settings.Default.IdExistingTest = 0; FrameClass.mainFrame.Navigate(new CreateTestPage()); }
     }
 }

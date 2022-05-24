@@ -44,7 +44,7 @@
                            Height="35"
                            HorizontalAlignment="Right">Разработчик теста:</TextBlock>
             </StackPanel>
-            
+
             <StackPanel Margin="20,65,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
@@ -280,7 +280,7 @@
                                          Height="40"/>
                 <Button.ToolTip>
                     <ToolTip Style="{DynamicResource tltpElement}">
-                        Изменить вопрос
+                        Сохранить изменения
                     </ToolTip>
                 </Button.ToolTip>
             </Button>

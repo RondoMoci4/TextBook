@@ -55,7 +55,7 @@ namespace TextBook.Pages
         private void Search()
         {
             ConnectionClass.connection = new DBTextBookEntities();
-            var themeSearch = ConnectionClass.connection.Test.ToList();
+            var themeSearch = ConnectionClass.connection.Theme.ToList();
             themeSearch = themeSearch.Where(x => x.Title.ToLower().Contains(txbSearchTheme.Text.ToLower())).ToList();
             lvTheme.ItemsSource = themeSearch.ToList();
         }
