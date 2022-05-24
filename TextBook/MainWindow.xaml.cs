@@ -82,5 +82,10 @@ namespace TextBook
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e) { FrameClass.mainFrame.Navigate(new MainPage()); Properties.Settings.Default.AdminStatus = false;}
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

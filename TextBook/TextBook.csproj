@@ -62,9 +62,13 @@
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1185.39\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="SautinSoft.Document, Version=5.5.4.14, Culture=neutral, PublicKeyToken=e759c76c7515592a, processorArchitecture=MSIL">
+      <HintPath>..\packages\sautinsoft.document.5.5.4.14\lib\net472\SautinSoft.Document.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -112,6 +116,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataBaseModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Data\DocxReader.cs" />
+    <Compile Include="Data\DocxToFlowDocunetConvert.cs" />
     <Compile Include="Data\FrameClass.cs" />
     <Compile Include="Data\Test.cs">
       <DependentUpon>DataBaseModel.tt</DependentUpon>

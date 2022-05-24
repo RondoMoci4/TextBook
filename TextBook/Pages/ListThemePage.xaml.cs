@@ -27,6 +27,7 @@ namespace TextBook.Pages
         {
             InitializeComponent();
             ConnectionClass.connection = new DBTextBookEntities();
+            lvTheme.ItemsSource = ConnectionClass.connection.Theme.ToList();
         }
 
         private void txbSearchTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleSearch,txbSearchTheme); }
@@ -80,5 +81,6 @@ namespace TextBook.Pages
                 textBox.Text = null;
             }
         }
+
     }
 }

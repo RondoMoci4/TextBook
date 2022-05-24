@@ -15,6 +15,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TextBook.Data;
+using SautinSoft.Document;
 
 namespace TextBook.Pages
 {
@@ -26,33 +28,93 @@ namespace TextBook.Pages
         public AddContentPage()
         {
             InitializeComponent();
+            ConnectionClass.connection = new DBTextBookEntities();
+            btnConvertTheme.Opacity = 0.3;
+            btnDeleteTheme.Opacity = 0.3;
+            btnSaveTheme.Opacity = 0.3;
         }
-
+        string path;
         private void btnLoadTheme_Click(object sender, RoutedEventArgs e)
         {
+
             rtbTheme.Document.Blocks.Clear();
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "RichText Files (*.rtf)|*.rtf|All files (*.*)|*.*";
 
             if (ofd.ShowDialog() == true)
             {
+
                 TextRange doc = new TextRange(rtbTheme.Document.ContentStart, rtbTheme.Document.ContentEnd);
                 using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
                 {
                     if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".rtf")
-                        doc.Load(fs, DataFormats.Rtf);
+                        doc.Load(fs, DataFormats.Rtf); 
                     else if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".txt")
                         doc.Load(fs, DataFormats.Text);
                     else if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".docx")
-                        doc.Load(fs, DataFormats.Xaml);
+                    {
+                        this.ReadDocx(ofd.FileName);
+                        MessageBox.Show("Для полного отображения текста необходимо конвертировать из формата .docx в .rtf","Внимание!");
+                        btnConvertTheme.Opacity = 1;
+                    }
+                    path = doc.Text;
+                    btnSaveTheme.IsEnabled = true;
+                    btnSaveTheme.Opacity = 1;
                 }
             }
-
         }
 
         private void btnSaveTheme_Click(object sender, RoutedEventArgs e)
         {
+            if (!String.IsNullOrWhiteSpace(txbTitleTheme.Text))
+            {
+                byte[] data = Encoding.UTF8.GetBytes(path);
+                Theme theme = new Theme()
+                {
+                    Title = txbTitleTheme.Text,
+                    TextTheme = data
+                };
+                ConnectionClass.connection.Theme.Add(theme);
+                ConnectionClass.connection.SaveChanges();
+                btnDeleteTheme.IsEnabled = true;
+                btnDeleteTheme.Opacity = 1;
+                rtbTheme.Document.Blocks.Clear();
+                txbTitleTheme.Clear();
+                btnSaveTheme.Opacity = 0.3;
+                btnSaveTheme.IsEnabled = false;
+            }
+            else { MessageBox.Show("Введите наименование темы"); }
+        }
 
+        private void btnConvertTheme_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Docx Files (*.docx)|*.docx";
+            if (ofd.ShowDialog() == true)
+            {
+                string file = ofd.FileName;
+                file = file.Replace("docx", "rtf");
+                DocumentCore dc = DocumentCore.Load(ofd.FileName);
+                dc.Save(file);
+                btnConvertTheme.Opacity = 0.3;
+                btnConvertTheme.IsEnabled = false;
+                MessageBox.Show("Файл конвертирован");
+            }
+        }
+
+        private void btnDeleteTheme_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        public void ReadDocx(string path)
+        {
+            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                var flowDocumentConverter = new DocxToFlowDocunetConvert(stream);
+                flowDocumentConverter.Read();
+                this.rtbTheme.Document = flowDocumentConverter.Document;
+                this.Title = System.IO.Path.GetFileName(path);
+            }
         }
 
         private void txbTitleTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleTheme,txbTitleTheme); }

@@ -151,7 +151,19 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-
+                <Button Style="{DynamicResource btnEnter}"
+                Width="30"
+                Height="30"
+                x:Name="btnBack"
+                        Margin="10,0,0,0"
+                        Click="btnBack_Click">
+                    <materialDesign:PackIcon Kind="ArrowBack"
+                                     Width="25"
+                                     Height="25"/>
+                    <Button.ToolTip>
+                        <ToolTip Style="{DynamicResource tltpElement}">Назад</ToolTip>
+                    </Button.ToolTip>
+                </Button>
             </StackPanel>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

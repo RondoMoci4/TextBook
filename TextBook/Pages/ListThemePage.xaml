@@ -31,23 +31,30 @@
                   Grid.Row="1"
                   Background="Transparent"
                   BorderThickness="0"
-                  Margin="10">
+                  Margin="10"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  MouseDoubleClick="lvTheme_MouseDoubleClick">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Width="500"
+                Width="350"
                 Height="150"
                 CornerRadius="10"
                 Background="{DynamicResource AdditionalColor}">
                         <Grid Margin="10">
-                            
+
                             <TextBlock VerticalAlignment="Top"
                            HorizontalAlignment="Center"
                            FontSize="18"
                            Foreground="{DynamicResource MainColor}"
-                           >Наименование темы</TextBlock>
+                           Text="{Binding Title}"></TextBlock>
                             <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
@@ -59,7 +66,8 @@
                                Foreground="{DynamicResource MainColor}"
                                Margin="10,0,0,0"
                                TextWrapping="Wrap"
-                               Width="310">текст текст текст текст текст текст текст текст текст текст текст текст текст</TextBlock>
+                               Width="310"
+                                           Text="{Binding Description}"></TextBlock>
                             </StackPanel>
                             <Button Grid.Row="1"
                         HorizontalAlignment="Center"
