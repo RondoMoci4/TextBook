@@ -92,7 +92,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <TextBlock Text="{Binding ElementName=lvTextbook,Path=SelectedItem.Title}" 
+        <TextBlock Text="{Binding ElementName=lvTheme,Path=SelectedItem.Title}" 
                    x:Name="labelTitle"
                    Visibility="Hidden"/>
         <UserControl HorizontalAlignment="Center"

@@ -72,7 +72,7 @@ namespace TextBook
         {
             Properties.Settings.Default.AdminStatus = false;
             if (Properties.Settings.Default.AdminStatus == false) { FrameClass.mainFrame.Navigate(new EnterPage()); }
-            else { FrameClass.mainFrame.Navigate(new AdminPage()); Properties.Settings.Default.IdExistingTest = 0; }
+            else { FrameClass.mainFrame.Navigate(new AdminPage()); Properties.Settings.Default.IdExistingTest = 0; Properties.Settings.Default.IdExistingTheme = 0; }
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
@@ -80,11 +80,14 @@ namespace TextBook
             FrameClass.mainFrame.Navigate(new AdminPage());
         }
 
-        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e) { FrameClass.mainFrame.Navigate(new MainPage()); Properties.Settings.Default.AdminStatus = false;}
+        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e) { FrameClass.mainFrame.Navigate(new MainPage()); Properties.Settings.Default.AdminStatus = false;
+            Properties.Settings.Default.IdExistingTest = 0; Properties.Settings.Default.IdExistingTheme = 0;
+        }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            try { FrameClass.mainFrame.GoBack(); }
+            catch { MessageBox.Show("Вы уже на главной странице"); }
         }
     }
 }

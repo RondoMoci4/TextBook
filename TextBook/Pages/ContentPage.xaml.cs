@@ -28,7 +28,7 @@ namespace TextBook.Pages
         {
             InitializeComponent();
             ConnectionClass.connection = new DBTextBookEntities();
-            var theme = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == "Теория");
+            var theme = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == Properties.Settings.Default.TitleTheme);
             string texttheme = Encoding.UTF8.GetString(theme.TextTheme);
             prTitle.Inlines.Add(theme.Title);
             prTheme.Inlines.Add(texttheme);

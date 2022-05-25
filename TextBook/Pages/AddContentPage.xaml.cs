@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TextBook.Data;
-using SautinSoft.Document;
 
 namespace TextBook.Pages
 {
@@ -25,26 +24,41 @@ namespace TextBook.Pages
     /// </summary>
     public partial class AddContentPage : Page
     {
+        bool Existing;
         public AddContentPage()
         {
             InitializeComponent();
             ConnectionClass.connection = new DBTextBookEntities();
-            btnConvertTheme.Opacity = 0.3;
-            btnDeleteTheme.Opacity = 0.3;
-            btnSaveTheme.Opacity = 0.3;
+            prgTitleTheme.Inlines.Add("Введите наименование темы");
+            var existing = ConnectionClass.connection.Theme.FirstOrDefault(x => x.idTheme == Properties.Settings.Default.IdExistingTheme);
+            if (existing == null)
+            {
+                btnDeleteTheme.Opacity = 0.3;
+                btnSaveTheme.Opacity = 0.3;
+                btnBindTest.Opacity = 0.3;
+                Existing = false;
+            }
+            else
+            {
+                btnDeleteTheme.Opacity = 1; btnDeleteTheme.IsEnabled = true;
+                btnSaveTheme.Opacity = 1; btnSaveTheme.IsEnabled = true;
+                Existing = true;
+                LoadTheme();
+            }
         }
         string path;
         private void btnLoadTheme_Click(object sender, RoutedEventArgs e)
         {
 
-            rtbTheme.Document.Blocks.Clear();
+            TextRange doc = new TextRange(prgTextTheme.ContentStart, prgTextTheme.ContentEnd);
+            doc.Text = "";
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "RichText Files (*.rtf)|*.rtf|All files (*.*)|*.*";
 
             if (ofd.ShowDialog() == true)
             {
 
-                TextRange doc = new TextRange(rtbTheme.Document.ContentStart, rtbTheme.Document.ContentEnd);
+                
                 using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
                 {
                     if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".rtf")
@@ -54,58 +68,80 @@ namespace TextBook.Pages
                     else if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".docx")
                     {
                         this.ReadDocx(ofd.FileName);
-                        MessageBox.Show("Для полного отображения текста необходимо конвертировать из формата .docx в .rtf","Внимание!");
-                        btnConvertTheme.Opacity = 1;
                     }
                     path = doc.Text;
-                    btnSaveTheme.IsEnabled = true;
-                    btnSaveTheme.Opacity = 1;
+                    btnSaveTheme.IsEnabled = true; btnSaveTheme.Opacity = 1;
                 }
             }
         }
 
         private void btnSaveTheme_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(txbTitleTheme.Text))
+            TextRange title = new TextRange(prgTitleTheme.ContentStart, prgTitleTheme.ContentEnd);
+            TextRange description = new TextRange(prgDescriptionTheme.ContentStart, prgDescriptionTheme.ContentEnd);
+            if (Existing == false)
             {
-                byte[] data = Encoding.UTF8.GetBytes(path);
-                Theme theme = new Theme()
+                if (!String.IsNullOrWhiteSpace(title.Text))
                 {
-                    Title = txbTitleTheme.Text,
-                    TextTheme = data
-                };
-                ConnectionClass.connection.Theme.Add(theme);
-                ConnectionClass.connection.SaveChanges();
-                btnDeleteTheme.IsEnabled = true;
-                btnDeleteTheme.Opacity = 1;
-                rtbTheme.Document.Blocks.Clear();
-                txbTitleTheme.Clear();
-                btnSaveTheme.Opacity = 0.3;
-                btnSaveTheme.IsEnabled = false;
+                    byte[] data = Encoding.UTF8.GetBytes(path);
+                    Theme theme = new Theme()
+                    {
+                        Title = title.Text,
+                        TextTheme = data,
+                        Description = description.Text,
+                    };
+                    ConnectionClass.connection.Theme.Add(theme);
+                    ConnectionClass.connection.SaveChanges();
+                    btnDeleteTheme.IsEnabled = true;
+                    btnDeleteTheme.Opacity = 1;
+                    rtbTheme.Document.Blocks.Clear();
+                    title.Text = "";
+                    btnSaveTheme.Opacity = 0.3;
+                    btnSaveTheme.IsEnabled = false;
+                }
+                else { MessageBox.Show("Введите наименование темы"); }
             }
-            else { MessageBox.Show("Введите наименование темы"); }
-        }
-
-        private void btnConvertTheme_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Docx Files (*.docx)|*.docx";
-            if (ofd.ShowDialog() == true)
+            else
             {
-                string file = ofd.FileName;
-                file = file.Replace("docx", "rtf");
-                DocumentCore dc = DocumentCore.Load(ofd.FileName);
-                dc.Save(file);
-                btnConvertTheme.Opacity = 0.3;
-                btnConvertTheme.IsEnabled = false;
-                MessageBox.Show("Файл конвертирован");
+                if (!String.IsNullOrWhiteSpace(title.Text))
+                {
+                    TextRange text = new TextRange(prgTextTheme.ContentStart,prgTextTheme.ContentEnd);
+                    byte[] data = Encoding.UTF8.GetBytes(text.Text);
+                    var theme = ConnectionClass.connection.Theme.FirstOrDefault(x => x.idTheme == Properties.Settings.Default.IdExistingTheme);
+                    theme.Title = title.Text;
+                    theme.TextTheme = data;
+                    theme.Description = description.Text;
+                    ConnectionClass.connection.SaveChanges();
+                    btnDeleteTheme.IsEnabled = true;
+                    btnDeleteTheme.Opacity = 1;
+                    rtbTheme.Document.Blocks.Clear();
+                    title.Text = "";
+                    btnSaveTheme.Opacity = 0.3;
+                    btnSaveTheme.IsEnabled = false;
+                }
+                else { MessageBox.Show("Введите наименование темы"); }
             }
+           
         }
 
         private void btnDeleteTheme_Click(object sender, RoutedEventArgs e)
         {
 
         }
+        private void btnBindTest_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void LoadTheme()
+        {
+            var theme = ConnectionClass.connection.Theme.FirstOrDefault(x => x.Title == Properties.Settings.Default.TitleTheme);
+            string texttheme = Encoding.UTF8.GetString(theme.TextTheme);
+            prgDescriptionTheme.Inlines.Add(theme.Description);
+            prgTitleTheme.Inlines.Add(theme.Title);
+            prgTextTheme.Inlines.Add(texttheme);
+        }
+
         public void ReadDocx(string path)
         {
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -117,37 +153,48 @@ namespace TextBook.Pages
             }
         }
 
-        private void txbTitleTheme_LostFocus(object sender, RoutedEventArgs e) { LostFocusAnimation(txbVisibleTheme,txbTitleTheme); }
-
-
-        private void txbTitleTheme_GotFocus(object sender, RoutedEventArgs e) { GotFocusAnimation(txbVisibleTheme); }
-
-
-        private void GotFocusAnimation(TextBlock textblock)
+        private void prgTitleTheme_GotFocus(object sender, RoutedEventArgs e)
         {
-            TranslateTransform transform = new TranslateTransform();
-            textblock.RenderTransform = transform;
-            DoubleAnimation animationY = new DoubleAnimation(0, -20, TimeSpan.FromSeconds(0.3));
-            transform.BeginAnimation(TranslateTransform.YProperty, animationY);
-            textblock.FontSize = 14;
-        }
-
-        private void LostFocusAnimation(TextBlock textVisible, TextBox textBox)
-        {
-            if (String.IsNullOrWhiteSpace(textBox.Text))
+            TextRange title = new TextRange(prgTitleTheme.ContentStart, prgTitleTheme.ContentEnd);
+            if (title.Text == "Введите наименование темы" || String.IsNullOrWhiteSpace(title.Text))
             {
-                TranslateTransform transform = new TranslateTransform();
-                textVisible.RenderTransform = transform;
-                DoubleAnimation animationY = new DoubleAnimation(-20, 0, TimeSpan.FromSeconds(0.3));
-                transform.BeginAnimation(TranslateTransform.YProperty, animationY);
-                textVisible.FontSize = 18;
-                textBox.Text = null;
+                prgTitleTheme.Inlines.Clear();
             }
         }
 
-        private void btnResetQuestion_Click(object sender, RoutedEventArgs e)
+        private void prgTitleTheme_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextRange title = new TextRange(prgTitleTheme.ContentStart, prgTitleTheme.ContentEnd);
+            if (title.Text == "Введите наименование темы" || String.IsNullOrWhiteSpace(title.Text))
+            {
+                prgTitleTheme.Inlines.Clear();
+                prgTitleTheme.Inlines.Add("Введите наименование темы");
+            }
+        }
+
+        private void lbListTest_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void btnListTest_Click(object sender, RoutedEventArgs e)
+        {
+            if (brdListTest.Width == 450)
+            {
+                DoubleAnimation anim = new DoubleAnimation();
+                anim.From = 450;
+                anim.To = 0;
+                anim.Duration = TimeSpan.FromSeconds(1);
+                brdListTest.BeginAnimation(WidthProperty, anim);
+            }
+            else
+            {
+                DoubleAnimation anim = new DoubleAnimation();
+                anim.From = 0;
+                anim.To = 450;
+                anim.Duration = TimeSpan.FromSeconds(1);
+                brdListTest.BeginAnimation(WidthProperty, anim);
+            }
         }
     }
 }

@@ -7,16 +7,22 @@
       xmlns:local="clr-namespace:TextBook.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="650"
-      Title="Добавление контента">
+      Title="Добавление контента"
+      x:Name="pageContent">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
             <RowDefinition/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
+                    Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <Button Style="{DynamicResource btnEnter}"
@@ -61,74 +67,149 @@
                 </StackPanel>
                 <Button.ToolTip>
                     <ToolTip Style="{DynamicResource tltpElement}">
-                        Добавить тему
+                        Сохранить тему
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
             <Button Style="{DynamicResource btnEnter}"
-                x:Name="btnConvertTheme"
-                Click="btnConvertTheme_Click"
-                Grid.Row="2"
-                Margin="10,0,0,0"
-                    IsEnabled="False">
-                <StackPanel Orientation="Horizontal"
-                        Margin="0,0,0,0">
-                    <materialDesign:PackIcon Kind="File"
+                x:Name="btnBindTest"
+                Click="btnBindTest_Click"
+                    IsEnabled="True"
+                   Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Link"
                                          Width="40"
                                          Height="40"
                                          VerticalAlignment="Center"/>
                 </StackPanel>
                 <Button.ToolTip>
                     <ToolTip Style="{DynamicResource tltpElement}">
-                        Конвертировать документ
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button Style="{DynamicResource btnEnter}"
-                    Margin="10,0,0,0"
-                    x:Name="btnResetQuestion"
-                    Click="btnResetQuestion_Click"
-                    IsEnabled="False">
-                <materialDesign:PackIcon Kind="ClearBox"
-                                         Width="40"
-                                         Height="40"/>
-                <Button.ToolTip>
-                    <ToolTip Style="{DynamicResource tltpElement}">
-                        Сбросить тему
+                        Привязать тест
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
         </StackPanel>
-       
-        <UserControl HorizontalAlignment="Center"
-                 VerticalAlignment="Center">
-            <Grid>
-                <TextBox Style="{DynamicResource txbModernStyle}"
-                 
-                 HorizontalContentAlignment="Center"
-                 Margin="0,0,0,0"
-                 FontSize="18"
-                 x:Name="txbTitleTheme" 
-                 LostFocus="txbTitleTheme_LostFocus"
-                 GotFocus="txbTitleTheme_GotFocus"></TextBox>
-                <TextBlock HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           FontSize="18"
-                           Margin="0,0,0,10"
-                           Foreground="{DynamicResource AdditionalColor}"
-                           x:Name="txbVisibleTheme"
-                           Panel.ZIndex="-2">Наименование темы</TextBlock>
-            </Grid>
-        </UserControl>
-
-        <RichTextBox Style="{DynamicResource rtbStyle}" Grid.Row="1"
+        
+        <RichTextBox Style="{DynamicResource rtbStyle}" Grid.Row="0"
                      Margin="10"
                      BorderThickness="1"
-                     BorderBrush="Black"
+                     BorderBrush="{DynamicResource AdditionalColor}"
                      Background="White"
                      Foreground="Black"
                      x:Name="rtbTheme"
-                     SpellCheck.IsEnabled="True">
+                     Grid.ColumnSpan="2"
+                     GotFocus="prgTitleTheme_GotFocus"
+                     LostFocus="prgTitleTheme_LostFocus">
+            <FlowDocument>
+                <Paragraph x:Name="prgTitleTheme"
+                           TextAlignment="Center"
+                           FontSize="18"
+                           Foreground="{DynamicResource AdditionalColor}"/>
+                <Paragraph x:Name="prgTextTheme"
+                           TextIndent="50"
+                           TextAlignment="Justify"/>
+            </FlowDocument>
         </RichTextBox>
+
+        <Grid Grid.Row="1"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="300" Width="350" MaxWidth="{Binding ElementName=pageContent,Path=ActualWidth}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <RichTextBox Style="{DynamicResource rtbStyle}" Grid.Row="1"
+                     Margin="10"
+                     BorderThickness="1"
+                     BorderBrush="{DynamicResource AdditionalColor}"
+                     Background="{DynamicResource MainColor}"
+                     Foreground="{DynamicResource AdditionalColor}"
+                     x:Name="rtbDescriptionTheme">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Left"
+                           FontSize="18"
+                           TextDecorations="Underline"
+                               Foreground="{DynamicResource AdditionalColor}">Описание (необязательное)</Paragraph>
+                    <Paragraph x:Name="prgDescriptionTheme"
+                           TextIndent="30"
+                               FontSize="16"
+                           TextAlignment="Justify"/>
+                </FlowDocument>
+            </RichTextBox>
+            <GridSplitter Style="{DynamicResource GridSplitterStyle}" Grid.Column="1" ShowsPreview="False" Width="3"
+        HorizontalAlignment="Center"
+                          Background="{DynamicResource AdditionalColor}"/>
+
+            <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                     Grid.Column="2"
+                        x:Name="oneTwo">
+                <Border Width="0"
+                        Height="{Binding ElementName=oneTwo,Path=ActualHeight}"
+                        x:Name="brdListTest">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               Foreground="{DynamicResource MainColor}"
+                               TextDecorations="Underline"
+                               FontSize="18"
+                               Margin="20,5,0,0">Список вопросов</TextBlock>
+                        <Grid Margin="10,30,10,30">
+                            <ListBox Background="{DynamicResource AdditionalColor}"
+                             BorderThickness="0"
+                             x:Name="lbListTest" MouseDoubleClick="lbListTest_MouseDoubleClick">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="5"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource MainColor}">
+                                            <TextBlock Foreground="{DynamicResource MainColor}"
+                                                   Text="{Binding Title}"
+                                                   FontSize="16"
+                                                   Margin="5"></TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock x:Name="txbQuestionListBox"
+                                   Visibility="Hidden"
+                                   Text="{Binding ElementName=lbListQuestion,Path=SelectedItem.IdTest}"/>
+
+                        </Grid>
+                    </Grid>
+                    
+                 
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Background" Value="{StaticResource AdditionalColor}"/>
+                            <Setter Property="CornerRadius" Value="0,10,10,0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                <Button Style="{DynamicResource btnEnter}"
+                x:Name="btnListTest"
+                Click="btnListTest_Click"
+                    IsEnabled="True"
+                    Width="40"
+                    Height="40"
+                   >
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ArrowRight"
+                                         Width="40"
+                                         Height="40"
+                                         VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button.ToolTip>
+                        <ToolTip Style="{DynamicResource tltpElement}">
+                            Список тестов
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+        
     </Grid>
 </Page>
