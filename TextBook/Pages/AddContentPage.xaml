@@ -74,7 +74,7 @@
             <Button Style="{DynamicResource btnEnter}"
                 x:Name="btnBindTest"
                 Click="btnBindTest_Click"
-                    IsEnabled="True"
+                    IsEnabled="False"
                    Margin="10,0,0,0">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Link"
@@ -154,8 +154,8 @@
                                Foreground="{DynamicResource MainColor}"
                                TextDecorations="Underline"
                                FontSize="18"
-                               Margin="20,5,0,0">Список вопросов</TextBlock>
-                        <Grid Margin="10,30,10,30">
+                               Margin="20,5,0,0">Список тестов</TextBlock>
+                        <Grid Margin="10,30,0,0">
                             <ListBox Background="{DynamicResource AdditionalColor}"
                              BorderThickness="0"
                              x:Name="lbListTest" MouseDoubleClick="lbListTest_MouseDoubleClick">
@@ -172,10 +172,9 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <TextBlock x:Name="txbQuestionListBox"
+                            <TextBlock x:Name="txbTestListBox"
                                    Visibility="Hidden"
-                                   Text="{Binding ElementName=lbListQuestion,Path=SelectedItem.IdTest}"/>
-
+                                   Text="{Binding ElementName=lbListTest,Path=SelectedItem.IdTest}"/>
                         </Grid>
                     </Grid>
                     
@@ -191,7 +190,7 @@
                 <Button Style="{DynamicResource btnEnter}"
                 x:Name="btnListTest"
                 Click="btnListTest_Click"
-                    IsEnabled="True"
+                    IsEnabled="False"
                     Width="40"
                     Height="40"
                    >
